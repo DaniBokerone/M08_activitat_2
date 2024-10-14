@@ -1,6 +1,7 @@
 package com.dani_juarez.m08_activitat_2;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Fer click per obrir el hall of fame
+        Button hallOfFameButton = findViewById(R.id.hall_of_fame);
+
+        hallOfFameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HallOfFameActivity.class);
+
+
+                Collections.sort(attemptsList);
+                intent.putIntegerArrayListExtra("attempts_data", attemptsList);
+                startActivity(intent);
+            }
+        });
+
+        //Fer click per jugar
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -81,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                             random_number = rand.nextInt(11);
 
                             //Funcions per actualiztar historic y texte d'amunt
-                            updateActualTriesText();
+                            updateActualTriesText(0);
                             updateAttemptsHistory();
 
                             actual_tries = 0;
@@ -93,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             //Funcio per actualiztar texte d'amunt
-                            updateActualTriesText();
+                            updateActualTriesText(actual_tries);
                         }
 
                         input_num.setText("");
@@ -116,11 +134,9 @@ public class MainActivity extends AppCompatActivity {
         historyTextView.setText(historyText.toString());
     }
 
-    private void updateActualTriesText(){
+    private void updateActualTriesText(Integer tries){
         TextView actual_try_text = findViewById(R.id.actual_try);
 
-        actual_tries = 0;
-
-        actual_try_text.setText("Numero d'intents actuals: " + actual_tries);
+        actual_try_text.setText("Numero d'intents actuals: " + tries);
     }
 }
